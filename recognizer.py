@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import pickle
 import time
+import os
+
 face_cascade = cv2.CascadeClassifier('HCTrainingImages\\haarcascade_frontalface_default.xml')
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -49,4 +51,13 @@ cap.release()
 cv2.destroyAllWindows()
 end_time = time.asctime(time.localtime(time.time()))
 
-pickle.dump([att_stud, init_faculty, start_time, end_time],open('pickle\\att.pkl','wb'))
+all_att = []
+if os.path.exists('pickle\\all_att.pkl'):
+    all_att = pickle.load(open('pickle\\all_att.pkl', 'rb'))
+
+all_att.append([att_stud, init_faculty, start_time, end_time])
+pickle.dump(all_att,open('pickle\\all_att.pkl','wb'))
+
+
+
+
