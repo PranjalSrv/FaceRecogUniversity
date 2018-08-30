@@ -4,13 +4,13 @@ import cv2
 import numpy as np
 import pickle
 
+desig = []
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 im_path = ['UserFaces\\student' , 'UserFaces\\faculty' , 'UserFaces\\admin']
 im_path_all = []
 for i in im_path:
     for j in os.listdir(i):
         im_path_all.append(i + '\\' + j)
-
 
 def getImagesId(path):
     imagepaths_1 = []
@@ -23,9 +23,10 @@ def getImagesId(path):
         for sublist in imagepaths_1:
             for item in sublist:
                 imagepaths.append(item)
+
         faces = []
         ids = []
-        desig = []
+        
         desig.append(path.split('\\')[1])
         for imagepath in imagepaths:
             faceimg = Image.open(imagepath).convert('L')
@@ -42,7 +43,7 @@ iddict = {}
 train_ID = []
 for id in ids:
     if id not in iddict:
-        iddict[id]=[index, desig[0]]
+        iddict[id]=[index, desig[index]]
         index+=1
 for id in ids:
     train_ID.append(iddict.get(id)[0])
