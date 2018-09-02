@@ -28,12 +28,10 @@ while True:
         pred_id, config = recognizer.predict(roi_grey)
        
         for regno,[id,desig] in iddict.items():
-            print(regno,id,desig)
             if id == pred_id:
                 pred_regno = regno
                 pred_desig = desig
 
-        print(pred_id, pred_regno, pred_desig)
         colour_desig = tuple([255 if pred_desig == 'student' else 0, 255 if pred_desig == 'faculty' else 0,255 if pred_desig == 'admin' else 0])
         cv2.putText(img, str(pred_regno), (x,y), font , 1, colour_desig, 2)
         cv2.putText(img, str(pred_desig), (x,y+h), font , 1, colour_desig, 2)
@@ -42,26 +40,25 @@ while True:
 
         if regno not in att_stud and desig == 'student':
             att_stud[regno] = [desig, time.asctime(time.localtime(time.time()))]
+            print(regno)
 
         if regno not in init_faculty and desig == 'faculty':
             init_faculty[regno] = [desig, time.asctime(time.localtime(time.time()))]
+            print(regno)
 
     cv2.imshow('img', img)
     k = cv2.waitKey(30) &0xFF
     if k==27:
-           break
+        break
 
 cap.release()
 cv2.destroyAllWindows()
 end_time = time.asctime(time.localtime(time.time()))
 
 all_att = []
+
 if os.path.exists('pickle\\all_att.pkl'):
     all_att = pickle.load(open('pickle\\all_att.pkl', 'rb'))
 
 all_att.append([att_stud, init_faculty, start_time, end_time])
 pickle.dump(all_att,open('pickle\\all_att.pkl','wb'))
-
-
-
-

@@ -3,8 +3,11 @@ import os
 import cv2
 import numpy as np
 import pickle
+import random
+
 
 desig = []
+trainingdata = []
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 im_path = ['UserFaces\\student' , 'UserFaces\\faculty' , 'UserFaces\\admin']
 im_path_all = []
@@ -24,20 +27,36 @@ def getImagesId(path):
             for item in sublist:
                 imagepaths.append(item)
 
-        faces = []
-        ids = []
+##        faces = []
+##        ids = []
         
         desig.append(path.split('\\')[1])
         for imagepath in imagepaths:
             faceimg = Image.open(imagepath).convert('L')
             npface = np.array(faceimg,'uint8')
+            faceimgflip = cv2.flip(npface, 0)
+            npfaceflip = np.array(faceimgflip, 'uint8')
             ID = os.path.split(imagepath)[0].split('\\')[2]
-            faces.append(npface)
-            ids.append(ID)
+##            faces.append(npface)
+##            faces.append(npfaceflip)
+##            ids.append(ID)
+##            ids.append(ID)
+            trainingdata.append([npface, ID])
+            trainingdata.append([npfaceflip, ID])
 
-    return(faces, ids, desig)
+    return(trainingdata, desig)
 
-faces,ids,desig = getImagesId(im_path)
+trainingdata, desig = getImagesId(im_path)
+
+random.shuffle(trainingdata)
+
+faces = []
+ids = []
+
+for feature, label in trainingdata:
+    faces.append(feature)
+    ids.append(label)
+
 index = 0
 iddict = {}
 train_ID = []
