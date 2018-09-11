@@ -38,13 +38,13 @@ while True:
         #cv2.rectangle(img, (x,y), (x+w, y+h), (255,0,0), 2)
         cv2.circle(img, (int(x+w/2),int(y+h/2)), int(h/2), colour_desig, 2)
 
-        if regno not in att_stud and desig == 'student':
-            att_stud[regno] = [desig, time.asctime(time.localtime(time.time()))]
-            print(regno)
+        if pred_regno not in att_stud and pred_desig == 'student':
+            att_stud[pred_regno] = [pred_desig, time.asctime(time.localtime(time.time()))]
+            print(pred_regno)
 
-        if regno not in init_faculty and desig == 'faculty':
-            init_faculty[regno] = [desig, time.asctime(time.localtime(time.time()))]
-            print(regno)
+        if pred_regno not in init_faculty and pred_desig == 'faculty':
+            init_faculty[pred_regno] = [pred_desig, time.asctime(time.localtime(time.time()))]
+            print(pred_regno)
 
     cv2.imshow('img', img)
     k = cv2.waitKey(30) &0xFF
@@ -56,9 +56,9 @@ cv2.destroyAllWindows()
 end_time = time.asctime(time.localtime(time.time()))
 
 all_att = []
-
+c_no = 0
 if os.path.exists('pickle\\all_att.pkl'):
     all_att = pickle.load(open('pickle\\all_att.pkl', 'rb'))
-
-all_att.append([att_stud, init_faculty, start_time, end_time])
+c_no = all_att[-1][4] + 1
+all_att.append([att_stud, init_faculty, start_time, end_time, c_no])
 pickle.dump(all_att,open('pickle\\all_att.pkl','wb'))
