@@ -59,6 +59,9 @@ all_att = []
 c_no = 0
 if os.path.exists('pickle\\all_att.pkl'):
     all_att = pickle.load(open('pickle\\all_att.pkl', 'rb'))
-c_no = all_att[-1][4] + 1
+try:    
+    c_no = all_att[-1][4] + 1
+except Exception:
+    c_no = 0        
 all_att.append([att_stud, init_faculty, start_time, end_time, c_no])
 pickle.dump(all_att,open('pickle\\all_att.pkl','wb'))
