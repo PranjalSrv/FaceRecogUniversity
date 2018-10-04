@@ -14,14 +14,13 @@ im_path_all = []
 for i in im_path:
     for j in os.listdir(i):
         im_path_all.append(i + '\\' + j)
-
 def getImagesId(path):
     imagepaths_1 = []
     for path in im_path_all:
         if len(os.listdir(path))>0:
             imagepaths_1.append([os.path.join(path, imageid) for imageid in os.listdir(path)])
 
-
+        
         imagepaths = []
         for sublist in imagepaths_1:
             for item in sublist:
@@ -43,7 +42,7 @@ def getImagesId(path):
 ##            ids.append(ID)
             trainingdata.append([npface, ID])
             trainingdata.append([npfaceflip, ID])
-
+    
     return(trainingdata, desig)
 
 trainingdata, desig = getImagesId(im_path)
@@ -57,17 +56,30 @@ for feature, label in trainingdata:
     faces.append(feature)
     ids.append(label)
 
-index = 0
 iddict = {}
+index = 0
 train_ID = []
-for id in ids:
-    if id not in iddict:
-        iddict[id]=[index, desig[index]]
-        index+=1
+for i in im_path_all:
+    comps = i.split('\\')
+    iddict[comps[2]] = [index, comps[1]]
+    index+=1
+    #train_ID.append(ind)
+
+#print(dict1)
+#print(desig)
+#print(len(list(set(ids))))
+#iddict = pickle.load(open('pickle\\iddict.pkl','rb'))
+#print(os.listdir('UserFaces\\student'))
+##for id in ids:
+##    if id not in iddict:
+##        iddict[id]=[index, desig[index]]
+##        index+=1
 for id in ids:
     train_ID.append(iddict.get(id)[0])
+    #print(iddict.get(id))
 
-
+#print(train_ID, ids)
+print(iddict)
 pickle.dump(iddict,open('pickle\\iddict.pkl','wb'))
 
 recognizer.train(faces, np.array(train_ID))

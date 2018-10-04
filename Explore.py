@@ -1,6 +1,6 @@
 import pickle
 import cv2
-
+import exploretrial
 
 all_att = pickle.load(open('pickle\\all_att.pkl', 'rb'))
 
@@ -38,9 +38,19 @@ def unlock(authregno):
     cv2.destroyAllWindows()
 
 
-def fac_explore(regno):
+def faculty_explore(regno):
     print("Faculty Exploring")
     all_att = pickle.load(open('pickle\\all_att.pkl', 'rb'))
+
+    mot = int(input('0 to view attendance, 1 to add regno, 2 to delete regno'))
+
+    if mot == 0:
+        [allstud, chno] = exploretrial.studinclass(regno)
+        print(allstud)
+    elif mot == 1:
+        exploretrial.addregno(regno)
+    elif mot == 2:
+        exploretrial.delregno(regno)
 
 
 def stud_explore(regno):

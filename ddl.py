@@ -7,8 +7,7 @@ c.execute(""" CREATE table base_attendance(
                 st_regno text,
                 fac_regno text,
                 intime text,
-                attstart text,
-                power int,
+                c_no int,
                 foreign key(st_regno) references student_det(st_regno),
                 foreign key(fac_regno) references faculty_det(fac_regno)
                 ) """)
